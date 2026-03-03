@@ -1,6 +1,6 @@
 name: lxqt-support-core24
 base: core24
-version: '2025-12-22'
+version: '2026-03-03'
 platforms:
   amd64:
     build-on: [amd64]
@@ -21,19 +21,12 @@ slots:
     read:
       - /
 
-package-repositories:
-  - type: apt
-    url: http://origin.archive.neon.kde.org/user
-    suites: [noble]
-    components: [main]
-    architectures: [amd64, arm64]
-    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
-
 parts:
   kvantum:
-    plugin: nil
+    plugin: cmake
     source: https://github.com/tsujan/Kvantum.git
-    source-tag: V1.1.5
+    source-tag: V1.1.6
+    source-subdir: Kvantum
     build-snaps: &build-snaps
       - kde-qt6-core24-sdk
       - kf6-core24-sdk
@@ -43,6 +36,7 @@ parts:
       - libgl-dev
       - libglu1-mesa-dev
       - libfreetype6-dev
+      - libxkbcommon-dev
     build-environment: &build-environment
       - PATH: /snap/kde-qt6-core24-sdk/current/usr/bin:/snap/kf6-core24-sdk/current/usr/bin${PATH:+:$PATH}
       - XDG_DATA_DIRS: $CRAFT_STAGE/usr/share:/snap/kde-qt6-core24-sdk/current/usr/share:/snap/kf6-core24-sdk/current/usr/share:/usr/share${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}
@@ -50,16 +44,11 @@ parts:
       - LD_LIBRARY_PATH: /snap/kde-qt6-core24-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/kde-qt6-core24-sdk/current/usr/lib:/snap/kf6-core24-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/kf6-core24-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/blas:/snap/kf6-core24-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/lapack:/snap/kf6-core24-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libproxy:/snap/kf6-core24-sdk/current/usr/lib:$CRAFT_STAGE/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:$CRAFT_STAGE/usr/lib:$CRAFT_STAGE/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
       - CMAKE_PREFIX_PATH: $CRAFT_STAGE;/snap/kde-qt6-core24-sdk/current;/snap/kf6-core24-sdk/current;/usr${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}
       - CMAKE_FIND_ROOT_PATH: $CRAFT_STAGE;/snap/kde-qt6-core24-sdk/current;/snap/kf6-core24-sdk/current;/usr${CMAKE_FIND_ROOT_PATH:+;$CMAKE_FIND_ROOT_PATH}
-    override-build: |
-      cd Kvantum
-      mkdir build
-      cd build
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr
-      make
-      make install DESTDIR=$CRAFT_PART_INSTALL
-      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/
-      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/libkvantum.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/
-      rm -r $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DWITHOUT_KF=ON
+    organize:
+      snap/kde-qt6-core24-sdk/current/usr/lib/x86_64-linux-gnu/qt6/plugins/styles/libkvantum.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/libkvantum.so
 
   kvantum-theme-lubuntu:
     after: [kvantum]
@@ -79,12 +68,8 @@ parts:
     build-environment: *build-environment
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
-    override-build: |
-      craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/
-      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/
-      rm -r $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/
     organize:
+      snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so
       snap/lxqt-support-core24/current/usr: usr
 
   libdbusmenu-lxqt:
@@ -108,7 +93,6 @@ parts:
       - pkg-config
       - libmenu-cache-dev
       - libexif-dev
-      - qt6-base-dev
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
@@ -137,12 +121,8 @@ parts:
     build-environment: *build-environment
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
-    override-build: |
-      craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/
-      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/
-      rm -r $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/
     organize:
+      snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so
       snap/lxqt-support-core24/current/usr: usr
 
   lxqt-build-tools:
