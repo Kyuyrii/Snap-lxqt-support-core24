@@ -1,6 +1,6 @@
 name: lxqt-support-core24
 base: core24
-version: '2026-03-03'
+version: '6.10.1'
 platforms:
   amd64:
     build-on: [amd64]
@@ -47,8 +47,10 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DWITHOUT_KF=ON
-    organize:
-      snap/kde-qt6-core24-sdk/current/usr/lib/x86_64-linux-gnu/qt6/plugins/styles/libkvantum.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/libkvantum.so
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/
+      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/libkvantum.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/
 
   kvantum-theme-lubuntu:
     after: [kvantum]
@@ -68,8 +70,11 @@ parts:
     build-environment: *build-environment
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/
+      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/
     organize:
-      snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/platformthemes/libqtlxqt.so
       snap/lxqt-support-core24/current/usr: usr
 
   libdbusmenu-lxqt:
@@ -121,8 +126,11 @@ parts:
     build-environment: *build-environment
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/
+      mv -f $CRAFT_PART_INSTALL/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/
     organize:
-      snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/iconengines/libQt6XdgIconPlugin.so
       snap/lxqt-support-core24/current/usr: usr
 
   lxqt-build-tools:
