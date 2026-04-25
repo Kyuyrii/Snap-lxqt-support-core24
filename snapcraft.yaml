@@ -67,7 +67,7 @@ parts:
     after: [libdbusmenu-lxqt, libfm-qt, libqtxdg, lxqt-build-tools]
     plugin: cmake
     source: https://github.com/lxqt/lxqt-qtplugin.git
-    source-tag: 2.3.0
+    source-tag: 2.4.0
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
@@ -84,7 +84,7 @@ parts:
   libdbusmenu-lxqt:
     plugin: cmake
     source: https://github.com/lxqt/libdbusmenu-lxqt.git
-    source-tag: 0.3.0
+    source-tag: 0.4.0
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
@@ -96,7 +96,7 @@ parts:
     after: [lxqt-build-tools, lxqt-menu-data]
     plugin: cmake
     source: https://github.com/lxqt/libfm-qt.git
-    source-tag: 2.3.0
+    source-tag: 2.4.0
     build-packages:
       - libglib2.0-dev
       - pkg-config
@@ -113,7 +113,7 @@ parts:
     after: [lxqt-build-tools]
     plugin: cmake
     source: https://github.com/lxqt/lxqt-menu-data.git
-    source-tag: 2.3.0
+    source-tag: 2.4.0
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
@@ -125,7 +125,7 @@ parts:
     after: [lxqt-build-tools]
     plugin: cmake
     source: https://github.com/lxqt/libqtxdg.git
-    source-tag: 4.3.0
+    source-tag: 4.4.0
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
@@ -142,7 +142,7 @@ parts:
   lxqt-build-tools:
     plugin: cmake
     source: https://github.com/lxqt/lxqt-build-tools.git
-    source-tag: 2.3.0
+    source-tag: 2.4.0
     build-snaps: *build-snaps
     build-environment: *build-environment
     cmake-parameters:
