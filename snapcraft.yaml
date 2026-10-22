@@ -1,6 +1,6 @@
 name: lxqt-support-core24
 base: core24
-version: '6.10.1'
+adopt-info: kvantum
 platforms:
   amd64:
     build-on: [amd64]
@@ -25,7 +25,7 @@ parts:
   kvantum:
     plugin: cmake
     source: https://github.com/tsujan/Kvantum.git
-    source-tag: V1.1.6
+    source-tag: V1.1.8
     source-subdir: Kvantum
     build-snaps: &build-snaps
       - kde-qt6-core24-sdk
@@ -54,6 +54,7 @@ parts:
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/
       find $CRAFT_PART_INSTALL -name "libkvantum.so" -type f -exec mv -f {} $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins/styles/ \;
+      craftctl set version=$(date +%Y-%m-%d)
     prime:
       - -snap
 
