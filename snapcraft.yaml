@@ -28,7 +28,7 @@ parts:
     source-tag: V1.1.9
     source-subdir: Kvantum
     build-snaps: &build-snaps
-      - kf6-core24-sdk
+      - kde-qt6-core24-sdk
     build-packages:
       - cmake
       - make
